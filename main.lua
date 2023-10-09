@@ -11,7 +11,7 @@ mp.commandv('set', 'osc', 'no')
 opts = {
     scale = 1,              -- osc render scale
     fixedHeight = false,    -- true to allow osc scale with window
-    hideTimeout = 1,        -- seconds untile osc hides, negative means never
+    hideTimeout = 0.6,        -- seconds untile osc hides, negative means never
     fadeDuration = 0.5,     -- seconds during fade out, negative means never
     }
 
@@ -422,10 +422,10 @@ ne.responder['resize'] = function(self)
 ne.responder['volume'] = function(self)
         local val = player.volume
         if val then
-            if val > 140 then val = 140
+            if val > 100 then val = 100
                 elseif val < 0 then val = 0 end
-            self.value = val/1.4
-            self.xValue = val/140 * self.xLength
+            self.value = val
+            self.xValue = val/100 * self.xLength
             self:render()
         end
         return false
@@ -435,13 +435,13 @@ ne.responder['mouse_move'] = function(self, pos)
         local vol = self:getValueAt(pos)
         if self.allowDrag then
             if vol then
-                mp.commandv('set', 'volume', vol*1.4)
+                mp.commandv('set', 'volume', vol)
             end
         end
         if self:isInside(pos) then
             local tipText
             if vol then
-                tipText = string.format('%d', vol*1.4)
+                tipText = string.format('%d', vol)
             else
                 tipText = 'N/A'
             end
@@ -458,7 +458,7 @@ ne.responder['mbtn_left_down'] = function(self, pos)
             self.allowDrag = true
             local vol = self:getValueAt(pos)
             if vol then
-                mp.commandv('set', 'volume', vol*1.4)
+                mp.commandv('set', 'volume', vol)
                 return true
             end
         end
